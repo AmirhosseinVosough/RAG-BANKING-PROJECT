@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from concurrent.futures import Future, ThreadPoolExecutor, wait
+from itertools import count
 import json
 from dataclasses import asdict, dataclass
 import logging
@@ -597,47 +598,44 @@ class VectorStore:
 			return []
 		return [float(value) for value in cleaned_str.split(",")]
 
-	def save_chunks_to_jsonl(self, chunk_path: Path) -> None:
-		"""
-		Save all stored chunks to a JSONL file for inspection or backup.
-		"""
-		path = Path(chunk_path) if chunk_path else settings.DEFAULT_CHUNK_PATH
-		if not path.exists():
-			logger.error("Chunks JSONL not found: %s", path)
-			return
-		records = []
-		with path.open(encoding="utf-8") as f:
-			for line in f:
-				if not line.strip():
-					continue
-				item = json.loads(line)
-				records.append(
-					ProcessedChunk(
-						chunk_id=item["chunk_id"],
-						source_id=item.get("source_filename", "unknown"),
-						source_name=item.get("source_filename", "unknown"),
-						text=item["text"],
-						page_start=item.get("page_start"),
-						page_end=item.get("page_end"),
-						metadata=item.get("metadata", {}),
-					)
-				)
-		            
-		store = VectorStore()
-		logger.info("Ingesting %d chunks to SQLite with background threading...", len(records))
-    
-    # Process in batches to not block RAM too hard
-		batch_size = 50
-		for i in range(0, len(records), batch_size):
-			store.add_chunks(records[i:i+batch_size])
-			logger.info("Queued batch %d/%d", i, len(records))
-			
-		store._flush_pending_sqlite_writes()
-		logger.info("Ingestion complete.")
 
-	if __name__ == "__main__":
-		logging.basicConfig(level=logging.INFO)
-		save_chunks_to_jsonl()
+
+
+
+
+	# Persist processed (pre-embedding) chunks to JSONL so ingestion can run later.
+	def save_chunks_to_jsonl(self, chunks: Iterable[ProcessedChunk], chunk_path: Path | str | None = None) -> int:
+		path = Path(chunk_path) if chunk_path else Path(settings.chunks_export_path)
+		path.parent.mkdir(parents=True, exist_ok=True)
+
+		count = 0
+		with path.open("w", encoding="utf-8") as f:
+			for chunk in chunks:
+				record = {
+					"source_id": chunk.source_id,
+					"source_name": chunk.source_name,
+					"chunk_id": chunk.chunk_id,
+					"regulation_title": chunk.regulation_title,
+					"jurisdiction": chunk.jurisdiction,
+					"effective_date": chunk.effective_date,
+					"section": chunk.section,
+					"text": chunk.text,
+					"metadata": chunk.metadata,
+				}
+				f.write(json.dumps(record, ensure_ascii=True) + "\n")
+				count += 1
+
+		logger.info("Saved %d chunks to %s", count, path)
+		return count
+
+
+
+
+
+
+
+
+
 
 """
 Why JSONL-first ingestion is useful:
