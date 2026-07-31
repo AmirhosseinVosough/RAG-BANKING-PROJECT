@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Python virtual environment (THE BIG ONE)
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+*.pyc
+
+# pytest
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variables (but keep .env.example)
+.env
+!.env.example
