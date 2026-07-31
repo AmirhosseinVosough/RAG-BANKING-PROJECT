@@ -16,9 +16,16 @@ from modules.models import Citation, ErrorResponse, RegulationInfo, RegulationSe
 from modules.retriever import Retriever
 from modules.vector_store import VectorStore
 
+from modules.reranker import Reranker
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("regulatory-compliance-rag")
+
+vector_store = VectorStore()
+reranker = Reranker()
+retriever = Retriever(vector_store, reranker=reranker)
+
+
 
 
 app = FastAPI(title=settings.app_name, version=settings.app_version)
@@ -200,15 +207,15 @@ def get_audit_trail() -> list[StrategyAuditRecord]:
 
 
 # Convert a retrieval result into the API citation shape.
-def result_to_citation(result) -> Citation:
+def result_to_citation(result: dict) -> Citation:
 	return Citation(
-		source_id=result.source_id,
-		source_name=result.source_name,
-		regulation_title=result.regulation_title,
-		jurisdiction=result.jurisdiction,
-		effective_date=result.effective_date,
-		section=result.section,
-		chunk_id=result.chunk_id,
-		confidence=result.confidence,
-		excerpt=result.text[:240],
+		source_id=result["source_id"],
+		source_name=result["source_name"],
+		regulation_title=result["regulation_title"],
+		jurisdiction=result["jurisdiction"],
+		effective_date=result["effective_date"],
+		section=result["section"],
+		chunk_id=result["chunk_id"],
+		confidence=result["confidence"],
+		excerpt=result["text"][:240],
 	)
