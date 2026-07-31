@@ -1,0 +1,22 @@
+[
+  {
+    "strategy_name": "Tech Momentum Long",
+    "description": "Buy tech stocks with positive earnings surprises, hold 2 weeks, 2:1 leverage",
+    "asset_class": "equities",
+    "leverage_ratio": 2.0,
+    "short_selling": false,
+    "use_insider_info": false,
+    "geographic_scope": ["US", "EU"],
+    "holding_period_days": 14
+  },
+  {
+    "strategy_name": "Borderline Data Strategy",
+    "description": "Maybe use customer data to improve trade timing",
+    "asset_class": "equities",
+    "leverage_ratio": 1.0,
+    "short_selling": false,
+    "use_insider_info": false,
+    "geographic_scope": ["EU"],
+    "holding_period_days": 5
+  }
+]
