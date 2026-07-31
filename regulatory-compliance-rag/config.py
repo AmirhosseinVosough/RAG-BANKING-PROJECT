@@ -12,14 +12,15 @@ REGULATIONS_DIR = DATA_DIR / "regulations"
 
 @dataclass(frozen=True)
 class Settings:
+	
 	app_name: str = "Regulatory Compliance RAG"
 	app_version: str = "0.1.0"
 	api_prefix: str = "/compliance"
 	database_url: str | None = os.getenv("DATABASE_URL")
 	embedding_model_name: str = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
 	vector_store_cache_path: Path = DATA_DIR / "vector_store_index.json"
-
 	embedding_dim: int = int(os.getenv("EMBEDDING_DIM", "384"))
+	chunks_export_path: Path = Path(os.getenv("CHUNKS_EXPORT_PATH", str(DATA_DIR / "chunks.jsonl")))
 	max_chunk_size: int = int(os.getenv("MAX_CHUNK_SIZE", "1200"))
 	chunk_overlap: int = int(os.getenv("CHUNK_OVERLAP", "150"))
 	top_k: int = int(os.getenv("TOP_K", "5"))
@@ -27,5 +28,5 @@ class Settings:
 	reranker_model_name: str = os.getenv("RERANKER_MODEL", "Xenova/ms-marco-MiniLM-L-6-v2")
 	rerank_candidate_count: int = int(os.getenv("RERANK_CANDIDATE_COUNT", "20"))
 	rrf_constant : int = int(os.getenv("RRF_CONSTANT", "60"))
-	DEFAULT_CHUNK_PATH : Path = Path(os.getenv("DEFAULT_CHUNK_PATH", "data/chunks.jsonl"))
+	
 settings = Settings()
