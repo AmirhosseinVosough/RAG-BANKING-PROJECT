@@ -56,14 +56,22 @@ def load_regulations_from_disk() -> None:
 
 	if not REGULATIONS_DIR.exists():
 		return
+
+	all_chunks = []
 	for file_path in iter_supported_files(REGULATIONS_DIR):
 		text = read_document_bytes(file_path)
 		if not text:
 			continue
 		source_id = file_path.stem
 		chunks = process_document(source_id=source_id, source_name=file_path.name, text=text)
+		all_chunks.extend(chunks)
 		vector_store.add_chunks(chunks)
+
+	if all_chunks:
+		vector_store.save_chunks_to_jsonl(all_chunks)
+
 	retriever.refresh()
+
 
 
 # Start the app by loading regulations and reporting the indexed chunk count.

@@ -34,11 +34,15 @@ def _clean_text(text: str) -> str:
 # Read a regulation file from disk and convert it into searchable text.
 def read_document_bytes(file_path: Path) -> str:
 	if file_path.suffix.lower() == ".pdf":
-		reader = _get_pdf_reader()(str(file_path))
-		pages = [page.extract_text() or "" for page in reader.pages]
-		return _clean_text("\n".join(pages))
+		try:
+			reader = _get_pdf_reader()(str(file_path))
+			pages = [page.extract_text() or "" for page in reader.pages]
+			return _clean_text("\n".join(pages))
+		except Exception as exc:
+			import logging
+			logging.getLogger(__name__).warning("WARNING: %s is not a valid PDF file (%s)", file_path.name, exc)
+			return ""
 	return _clean_text(file_path.read_text(encoding="utf-8"))
-
 
 # Read uploaded file bytes and convert them into searchable text.
 def read_uploaded_bytes(data: bytes, filename: str) -> str:

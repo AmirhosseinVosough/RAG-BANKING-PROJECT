@@ -1,1 +1,0 @@
-MiFID II requires firms to take all sufficient steps to obtain the best possible result for clients when executing orders.

@@ -1,1 +1,0 @@
-Internal policy prohibits trading strategies that use customer personal data for targeting without explicit consent and legal review.
