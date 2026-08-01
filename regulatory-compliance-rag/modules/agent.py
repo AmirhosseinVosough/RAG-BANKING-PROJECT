@@ -130,7 +130,7 @@ class ComplianceAgent:
 					chunk_id=rule["chunk_id"],
 					confidence=rule.get("confidence", rule.get("bm25_score", 0.0)),
 					excerpt=rule["text"][:240],
-					retrieval_score=rule.get("retrieval_score", rule.get("bm25_score", 0.0)),
+					retrieval_score=rule.get("retrieval_score", 0.0),
 				)
 			)
 		return citations
