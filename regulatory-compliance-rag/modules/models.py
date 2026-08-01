@@ -20,16 +20,18 @@ class StrategyCheckRequest(BaseModel):
 	holding_period_days: int | None = Field(default=None, ge=0)
 
 
+
 class Citation(BaseModel):
-	source_id: str
-	source_name: str
-	regulation_title: str
-	jurisdiction: str
-	effective_date: str
-	section: str
-	chunk_id: str
-	confidence: float
-	excerpt: str
+    source_id: str
+    source_name: str
+    regulation_title: str
+    jurisdiction: str
+    effective_date: str
+    section: str
+    chunk_id: str
+    confidence: float
+    retrieval_score: float | None = None
+    excerpt: str
 
 
 class StrategyCheckResponse(BaseModel):
@@ -81,3 +83,4 @@ class RegulationSearchResponse(BaseModel):
 
 class ErrorResponse(BaseModel):
 	detail: str
+

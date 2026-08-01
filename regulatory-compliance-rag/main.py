@@ -26,7 +26,8 @@ reranker = Reranker()
 retriever = Retriever(vector_store, reranker=reranker)
 
 
-
+agent = ComplianceAgent()
+audit_trail: list[StrategyAuditRecord] = []
 
 app = FastAPI(title=settings.app_name, version=settings.app_version)
 app.add_middleware(
@@ -36,11 +37,6 @@ app.add_middleware(
 	allow_headers=["*"],
 )
 
-
-vector_store = VectorStore()
-retriever = Retriever(vector_store)
-agent = ComplianceAgent()
-audit_trail: list[StrategyAuditRecord] = []
 
 
 # Initialize the vector store from prepared JSONL, or create that JSONL from raw documents.
@@ -224,6 +220,7 @@ def result_to_citation(result: dict) -> Citation:
 		effective_date=result["effective_date"],
 		section=result["section"],
 		chunk_id=result["chunk_id"],
-		confidence=result["confidence"],
+		confidence=result.get("confidence", result.get("bm25_score", 0.0)),
+		retrieval_score=result.get("retrieval_score"),
 		excerpt=result["text"][:240],
 	)
