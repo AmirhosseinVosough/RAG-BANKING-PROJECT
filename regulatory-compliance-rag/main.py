@@ -224,3 +224,6 @@ def result_to_citation(result: dict) -> Citation:
 		retrieval_score=result.get("retrieval_score"),
 		excerpt=result["text"][:240],
 	)
+
+
+
