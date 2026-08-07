@@ -1,0 +1,18 @@
+{
+  "_comment": "Source-of-truth metadata for all PDF regulations. Add a new entry here when a new PDF is added to data/regulations/ — no code changes needed.",
+  "Basel III - RAG banking project.pdf": {
+    "jurisdiction": "Global (Basel Committee / BIS)",
+    "regulation_title": "Basel III: International Regulatory Framework for Banks",
+    "effective_date": "2013-01-01"
+  },
+  "GDPR-RAG banking project.pdf": {
+    "jurisdiction": "EU",
+    "regulation_title": "General Data Protection Regulation (GDPR) — Regulation (EU) 2016/679",
+    "effective_date": "2018-05-25"
+  },
+  "MiFID II- RAG banking project.pdf": {
+    "jurisdiction": "EU",
+    "regulation_title": "Markets in Financial Instruments Directive II (MiFID II) — Directive 2014/65/EU",
+    "effective_date": "2018-01-03"
+  }
+}

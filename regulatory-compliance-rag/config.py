@@ -8,6 +8,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 REGULATIONS_DIR = DATA_DIR / "regulations"
+REGULATIONS_MANIFEST = BASE_DIR / "regulations_manifest.json"
 
 
 @dataclass(frozen=True)
